@@ -1,5 +1,7 @@
 const GITHUB_API = 'https://api.github.com';
 
+const EXCLUDED_REPOS = ['leetcode', 'leet-code', 'leetcode-solutions', 'daily-solutions'];
+
 export async function fetchGitHubData(username: string, token?: string) {
   const headers: Record<string, string> = {
     Accept: 'application/vnd.github.v3+json',
@@ -18,8 +20,11 @@ export async function fetchGitHubData(username: string, token?: string) {
     eventsRes.json(),
   ]);
 
+  const isExcluded = (repoName: string) =>
+    EXCLUDED_REPOS.some(r => repoName.toLowerCase().includes(r));
+
   const commits = (Array.isArray(eventsData) ? eventsData : [])
-    .filter((e: any) => e.type === 'PushEvent')
+    .filter((e: any) => e.type === 'PushEvent' && !isExcluded(e.repo.name))
     .flatMap((e: any) =>
       (e.payload.commits || []).map((c: any) => ({
         message: c.message.split('\n')[0],
@@ -32,7 +37,7 @@ export async function fetchGitHubData(username: string, token?: string) {
   const weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
   const weekEvents = (Array.isArray(eventsData) ? eventsData : []).filter(
-    (e: any) => new Date(e.created_at) > weekAgo
+    (e: any) => new Date(e.created_at) > weekAgo && !isExcluded(e.repo.name)
   );
 
   const weeklyCommits = weekEvents
