@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dev Daily — Alexa+ Developer Assistant
 
-## Getting Started
+A simulated Alexa+ experience that gives developers a daily briefing of their GitHub activity. Ask it about open PRs, issues, weekly contributions, and more — via voice or text.
 
-First, run the development server:
+Built for the **Amazon Developer Hackathon** — Alexa+ track (simulated experience).
+
+## What it does
+
+- **Morning briefing** — daily summary of your GitHub activity, spoken aloud
+- **Open PR tracker** — instantly know what needs your attention
+- **Weekly stats** — commits, PRs opened, issues closed
+- **Voice input/output** — powered by Web Speech API (Chrome)
+- **Conversational AI** — multi-turn context powered by AWS Bedrock
+
+## Tech Stack
+
+- **Next.js 16** + TypeScript + Tailwind CSS
+- **GitHub REST API** — live PR, issue, and event data
+- **AWS Bedrock** (Claude 3.5 Haiku) — natural language briefings
+- **Web Speech API** — voice in/out
+
+## Quick Start
 
 ```bash
+# 1. Clone and install
+git clone https://github.com/jasonjose007/dev-daily
+cd dev-daily
+npm install
+
+# 2. Add AWS credentials
+cp .env.local.example .env.local
+# Edit .env.local with your AWS keys
+
+# 3. Run
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000), enter your GitHub username, and say "Good morning briefing."
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Description |
+|---|---|---|
+| `AWS_ACCESS_KEY_ID` | Yes | AWS access key |
+| `AWS_SECRET_ACCESS_KEY` | Yes | AWS secret key |
+| `AWS_SESSION_TOKEN` | No | For temporary credentials |
+| `AWS_REGION` | No | Default: `us-east-1` |
+| `BEDROCK_MODEL_ID` | No | Default: `us.anthropic.claude-3-5-haiku-20241022-v1:0` |
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
